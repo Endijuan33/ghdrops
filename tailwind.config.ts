@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
+  darkMode: "class", // PERBAIKAN: Mengubah dari ["class"] menjadi "class"
   content: [
     './src/pages/**/*.{ts,tsx}',
     './src/components/**/*.{ts,tsx}',
@@ -17,7 +17,7 @@ const config: Config = {
     },
     extend: {
       colors: {
-        white: '#ffffff', // Perbaikan Definitif: Menambahkan warna putih secara eksplisit
+        white: '#ffffff', // Dipertahankan: Ini sekarang akan dibaca dengan benar
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
