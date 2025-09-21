@@ -3,15 +3,14 @@
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useSession } from 'next-auth/react';
-import { checkAirdropEligibility, CheckResult, FormState } from './actions'; // Impor tipe baru
+import { checkAirdropEligibility, CheckResult, FormState } from './actions';
 import AuthButton from "@/components/AuthButton";
 import UserCard from "@/components/UserCard";
 import { Github, Users, GitPullRequest, Star, Clock, Trophy, CheckCircle, AlertTriangle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion'; // Import Variants
 import CountUp from 'react-countup';
 import Tilt from 'react-parallax-tilt';
 
-// Tombol Submit tidak berubah
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -25,18 +24,21 @@ function SubmitButton() {
   );
 }
 
-// Varian animasi tidak berubah
-const cardVariants = {
+// Secara eksplisit ketik varian dengan `Variants`
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: 'spring', stiffness: 100 } // Tipe sudah benar, tetapi pengetikan eksplisit membantu compiler
+  },
 };
 
-// Menggunakan tipe CheckResult untuk prop data
 function ManualCheckResultCard({ data }: { data: CheckResult }) {
     return (
       <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} glareEnable={true} glareMaxOpacity={0.1} perspective={1000}>
@@ -69,7 +71,6 @@ function ManualCheckResultCard({ data }: { data: CheckResult }) {
     );
 }
 
-// SKELETON LOADER tidak berubah
 function ResultSkeleton() {
     return (
       <Tilt tiltMaxAngleX={3} tiltMaxAngleY={3} perspective={1000}>
@@ -90,7 +91,6 @@ function ResultSkeleton() {
     );
 }
 
-// Menggunakan FormState untuk hook useActionState
 function ManualCheckSection() {
     const [state, formAction] = useActionState<FormState, FormData>(checkAirdropEligibility, null); 
     const { pending } = useFormStatus();
