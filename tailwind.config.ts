@@ -17,6 +17,7 @@ const config: Config = {
     },
     extend: {
       colors: {
+        white: '#ffffff', // Perbaikan Definitif: Menambahkan warna putih secara eksplisit
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

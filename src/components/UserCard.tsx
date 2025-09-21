@@ -3,21 +3,26 @@
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useSession } from 'next-auth/react';
-import { checkAirdropEligibility, CheckResult, FormState } from '@/app/actions'; // Impor tipe baru
+import { checkAirdropEligibility, CheckResult, FormState } from '@/app/actions';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Users, GitPullRequest, Star, Clock, Trophy, AlertTriangle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion'; // Import Variants
 import CountUp from 'react-countup';
 import Tilt from 'react-parallax-tilt';
 
-const cardVariants = {
+// Secara eksplisit ketik varian dengan `Variants`
+const cardVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 15 },
-  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: 'spring', stiffness: 100 } // Tipe sudah benar, tetapi pengetikan eksplisit membantu compiler
+  },
 };
 
 function CheckButton() {
@@ -33,7 +38,6 @@ function CheckButton() {
     );
 }
 
-// Menggunakan tipe CheckResult untuk prop data
 function ResultsDisplay({ data }: { data: CheckResult }) {
     return (
         <motion.div className="mt-6 space-y-4" variants={cardVariants} initial="hidden" animate="visible">
@@ -73,7 +77,6 @@ function CardContentSkeleton() {
     );
 }
 
-// Menggunakan FormState untuk hook useActionState
 function CardFormContent({ username }: { username: string }) {
     const [state, formAction] = useActionState<FormState, FormData>(checkAirdropEligibility, null); 
     const { pending } = useFormStatus();
