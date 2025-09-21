@@ -1,26 +1,103 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background-rgb: 2, 6, 23; /* slate-950 */
+    --glow-1-rgb: 37, 99, 235; /* blue-600 */
+    --glow-2-rgb: 29, 78, 216; /* blue-700 */
+    --glow-3-rgb: 79, 70, 229; /* indigo-600 */
+    --glow-4-rgb: 124, 58, 237; /* purple-600 */
+  }
+}
+
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: theme('colors.white');
+  background-color: rgb(var(--background-rgb));
+  overflow: hidden; /* Prevent scrollbars from the large pseudo-elements */
+  position: relative;
+}
+
+/* The animated aurora background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background: radial-gradient(circle at 20% 25%, rgba(var(--glow-1-rgb), 0.3), transparent 30%),
+                radial-gradient(circle at 80% 30%, rgba(var(--glow-2-rgb), 0.3), transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(var(--glow-3-rgb), 0.3), transparent 30%),
+                radial-gradient(circle at 75% 75%, rgba(var(--glow-4-rgb), 0.2), transparent 30%);
+    background-size: 300% 300%;
+    animation: aurora 25s ease-in-out infinite;
+}
+
+/* Adding a noise texture overlay */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+    opacity: 0.02;
+    pointer-events: none;
+}
+
+
+/* Base styles for glassmorphism effect - slightly adjusted for new background */
+.glass-card {
+  @apply bg-slate-900/60 backdrop-blur-xl border border-slate-700/40 rounded-2xl shadow-lg;
+}
+
+/* Glow effect for interactive elements */
+.button-glow {
+  @apply transition-all duration-300;
+}
+.button-glow:hover {
+  @apply shadow-[0_0_25px_theme('colors.blue.500/50%')];
+}
+
+/* Text gradient */
+.text-gradient {
+  @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+}
+
+/* Re-defining animations using tailwind keyframes */
+@layer utilities {
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -100% 0; }
+    100% { background-position: 100% 0; }
+  }
+  .shimmer {
+      background: linear-gradient(90deg, transparent, theme('colors.slate.700/50%'), transparent);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+  }
 }
