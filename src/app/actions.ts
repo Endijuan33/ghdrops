@@ -35,9 +35,11 @@ export async function checkAirdropEligibility(prevState: FormState, formData: Fo
 
   // 1. Validasi input
   if (!validatedFields.success) {
+    // Untuk tipe data primitif (seperti string), Zod menempatkan error di `formErrors`.
+    const errorMessages = validatedFields.error.flatten().formErrors;
     return {
       status: 'error',
-      message: validatedFields.error.flatten().fieldErrors.username?.[0] || 'Input tidak valid.',
+      message: errorMessages[0] || 'Input tidak valid.',
     };
   }
 
